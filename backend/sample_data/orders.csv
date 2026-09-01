@@ -1,0 +1,24 @@
+order_id,customer_name,order_date,amount,currency,status
+ORD-1001,Ada Lovelace,2026-08-01,120.00,USD,paid
+ORD-1002,Grace Hopper,2026-08-01,45.50,usd,paid
+ORD-1003, Alan Turing ,2026-08-02,$300.00,USD,paid
+ORD-1004,Margaret Hamilton,08/02/2026,89.99,USD,paid
+ORD-1005,Katherine Johnson,2026-08-03,"1,250.00",USD,paid
+ORD-1006,Radia Perlman,2026-08-03,60.00,USD,paid
+ORD-1007,Barbara Liskov,2026-08-04,15.25,USD,paid
+ORD-1008,Frances Allen,2026-08-04,500.00,USD,paid
+ORD-1009,Shafi Goldwasser,2026-08-05,72.10,USD,paid
+ORD-1010,Adele Goldberg,2026-08-05,18.00,USD,paid
+ORD-1011,Steve Wozniak,2026-08-06,200.00,USD,paid
+ORD-1012,Linus Torvalds,2026-08-06,35.00,USD,paid
+ORD-1013,Guido van Rossum,2026-08-07,99.00,USD,paid
+ORD-1014,James Gosling,2026-08-07,150.00,USD,paid
+ORD-1015,Dennis Ritchie,2026-08-08,40.00,USD,paid
+ORD-1015,Dennis Ritchie,2026-08-08,40.00,USD,paid
+ORD-1016,Bjarne Stroustrup,2026-08-08,80.00,USD,paid
+ORD-1017,Anders Hejlsberg,2026-08-09,65.00,EUR,paid
+ORD-1018,Yukihiro Matsumoto,2026-08-09,220.00,USD,paid
+ORD-1019,Rasmus Lerdorf,2026-08-10,49.99,USD,paid
+ORD-1020,Brendan Eich,2026-08-10,30.00,USD,paid
+ORD-1021,John Backus,2026-08-11,18.75,USD,paid
+ORD-1022,Niklaus Wirth,2026-08-11,260.00,USD,paid
