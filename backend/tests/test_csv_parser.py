@@ -59,3 +59,25 @@ def test_defaults_missing_currency_to_usd():
     csv_bytes = b"order_id,amount\nORD-1,10.00\n"
     records = parse_orders_csv(csv_bytes)
     assert records[0]["currency"] == "USD"
+
+
+def test_accepts_common_column_name_aliases_for_orders():
+    csv_bytes = b"Order Number,Total,Buyer\nORD-1,99.00,Jane\n"
+    records = parse_orders_csv(csv_bytes)
+    assert records[0]["order_id"] == "ORD-1"
+    assert records[0]["amount"] == Decimal("99.00")
+    assert records[0]["customer_name"] == "Jane"
+
+
+def test_accepts_common_column_name_aliases_for_payments():
+    csv_bytes = b"Transaction ID,Reference,Amount Paid\nPAY-1,ORD-1,50.00\n"
+    records = parse_payments_csv(csv_bytes)
+    assert records[0]["payment_id"] == "PAY-1"
+    assert records[0]["order_id"] == "ORD-1"
+    assert records[0]["amount"] == Decimal("50.00")
+
+
+def test_still_reports_missing_column_when_no_alias_matches():
+    csv_bytes = b"customer_name,notes\nJane,hello\n"
+    with pytest.raises(CSVParseError):
+        parse_orders_csv(csv_bytes)
