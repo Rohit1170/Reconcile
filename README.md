@@ -287,6 +287,55 @@ computed by actually running the code, not estimated), and the full flow
 detail -> AI explanation) was exercised end-to-end in a real browser before
 being called done.
 
+## Deploying to Vercel
+
+This repo deploys as a single Vercel project using [Vercel Services](https://vercel.com/docs/services), which run the Next.js frontend and the FastAPI backend together behind one domain (`vercel.json` at the repo root):
+
+```json
+{
+  "services": {
+    "frontend": { "root": ".", "framework": "nextjs" },
+    "backend": { "root": "backend", "entrypoint": "main:app" }
+  },
+  "rewrites": [
+    { "source": "/api/backend(/.*)?", "destination": { "type": "service", "service": "backend" } },
+    { "source": "/(.*)", "destination": { "type": "service", "service": "frontend" } }
+  ]
+}
+```
+
+**Why the backend routes are mounted twice**: a Vercel service receives the
+request's *full original path* -- a request to `/api/backend/auth/login`
+reaches the FastAPI app as `/api/backend/auth/login`, not `/auth/login`.
+Rather than force local development to always use that prefix,
+`backend/main.py` mounts every route both unprefixed (what you use locally,
+and what the tests/README curl examples above use) and again under
+`/api/backend` (what Vercel's rewrite requires) -- same app, same code, two
+mount points.
+
+**Before deploying**, you need:
+
+1. **A cloud-reachable MongoDB.** Vercel Functions cannot reach a `mongod`
+   running on your laptop. Use [MongoDB Atlas](https://www.mongodb.com/atlas)
+   (a free tier is enough) and put its connection string in `MONGODB_URI`.
+2. **Environment variables**, set in the Vercel project's Settings ->
+   Environment Variables (these apply project-wide, covering both services):
+   - `MONGODB_URI`, `DATABASE_NAME`, `JWT_SECRET`, `GROQ_API_KEY`, `GROQ_MODEL`
+   - `FRONTEND_URL` -- set to your deployed domain (e.g. `https://your-app.vercel.app`)
+   - `NEXT_PUBLIC_API_URL` -- set to `/api/backend` (a **relative** path, not
+     a full URL -- frontend and backend share one domain under Services, so
+     this becomes a same-origin call through the rewrite above, and no CORS
+     round-trip is needed in production)
+3. **Python version**: pinned via `backend/.python-version` (3.12), the same
+   version this was developed and tested against -- newer Python versions
+   have had prebuilt-wheel gaps for some pinned dependencies (see
+   Troubleshooting).
+
+Then push to the branch connected to your Vercel project (or run `vercel
+deploy` locally) -- both services build and deploy together as one unit.
+`vercel dev` also runs both services together locally if you want to test
+the exact Vercel routing before deploying.
+
 ## Troubleshooting
 
 - **`pydantic-core` fails to build / `pyo3` version error during
