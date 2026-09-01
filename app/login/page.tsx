@@ -41,6 +41,9 @@ export default function LoginPage() {
             <p className="mt-1 text-sm text-muted-foreground">Log in to your reconcile workspace</p>
           </div>
         </div>
+        <p className="mb-4 rounded-md border border-primary/20 bg-accent px-3 py-2 text-center text-xs text-accent-foreground">
+          Test account: <span className="font-medium">test@example.com</span> / <span className="font-medium">password123</span>
+        </p>
         <form onSubmit={onSubmit} className="flex flex-col gap-4 rounded-lg border bg-card p-6 shadow-sm">
           {error && <p className="rounded-md bg-destructive/10 px-3 py-2 text-sm text-destructive">{error}</p>}
           <div className="flex flex-col gap-1.5">
